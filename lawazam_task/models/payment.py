@@ -30,18 +30,17 @@ class Payment(models.Model):
         for rec in self:
             account_move_line = self.env['account.move.line']
 
-            name = account_move_line._get_default_line_name(
-                payment_display_name['%s-%s' % (rec.payment_type, rec.partner_type)],
-                rec.amount,
-                rec.currency_id,
-                rec.date,
-                partner=rec.partner_id)  # Create with label as attached on file
-
-
             if rec.fee_amount > 0:
                 # Validate YOU FEE TYPE SELECTED
                 if not self.fee_type:
                     raise ValidationError(_("You must select Fee Type"))
+
+                name = account_move_line._get_default_line_name(
+                    payment_display_name['%s-%s' % (rec.payment_type, rec.partner_type)],
+                    rec.amount,
+                    rec.currency_id,
+                    rec.date,
+                    partner=rec.partner_id)  # Create with label as attached on file
 
                 # Create Bank Fee Line without check Balance
                 account_move_line.with_context(check_move_validity=False).create({
