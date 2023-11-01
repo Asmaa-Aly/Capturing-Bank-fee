@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record  id="view_account_payment_form_inherit" model="ir.ui.view">
+            <field name="name">view_account_payment_form_inherit form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='amount_div']" position="after">
+
+                    <label for="fee_amount"/>
+                    <div name="bank_fee_amount_div" class="o_row">
+                        <field name="fee_amount"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="fee_account_id" placeholder="Bank Fee Account" attrs="{'required': [('fee_amount', '>', 0.0)], 'readonly': [('state', '!=', 'draft')]}"/>
+                    </div>
+
+                    <label for="fee_type"/>
+                    <div name="bank_fee_type_div" class="o_row">
+                        <field name="fee_type" widget="radio" attrs="{'readonly': [('state', '!=', 'draft')]}" options="{'horizontal': true}"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
